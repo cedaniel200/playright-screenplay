@@ -1,5 +1,5 @@
-import { Actor } from "../screenplay/actor";
+import { Actor } from './actor'
 
 export interface Performable {
-    perform(actor: Actor): void;
+  perform(actor: Actor): Promise<void>
 }

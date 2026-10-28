@@ -1,5 +1,3 @@
-import { Performable } from "./performable"
+import { Performable } from './performable'
 
-export interface Task extends Performable {
-
-}
+export interface Task extends Performable {}
