@@ -1,19 +1,17 @@
-import { Stage } from './stage';
-import { Actor, ActorBuilder } from './actor';
-import { ScreenplayWorld } from './cucumber/screenplay_world';
+import { Actor, ActorBuilder } from './actor'
+import { Stage } from './stage'
+import { ScreenplayWorld } from './cucumber/screenplay_world'
+
+let stage: Stage
 
 export function theActorNamed(name: string): Actor {
-    return ActorBuilder.createAnActorCalled(name).whoActsIn(exports.stage);
+  return ActorBuilder.createAnActorCalled(name).whoActsIn(stage)
 }
 
-export function theActorInTheSpotlight() :Actor {
-    return ActorBuilder.theCurrentActor();
+export function theActorInTheSpotlight(): Actor {
+  return ActorBuilder.theCurrentActor()
 }
 
-export function setTheStage(stage: Stage): void{
-    exports.stage = stage;
-}
-
-export function setTheStageFromCucumber(stage: ScreenplayWorld): void{
-    exports.stage = stage;
+export function setTheStageFromCucumber(world: ScreenplayWorld): void {
+  stage = Stage.fromCucumber(world)
 }
