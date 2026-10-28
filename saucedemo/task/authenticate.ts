@@ -7,7 +7,7 @@ export class Authenticate implements Task {
   constructor(private readonly user: User) {}
 
   async perform(actor: Actor): Promise<void> {
-    const loginPage = new LoginPage(actor.stage.page)
+    const loginPage = LoginPage.on(actor.stage.page)
     await loginPage.USERNAME.fill(this.user.username)
     await loginPage.PASSWORD.fill(this.user.password)
     await loginPage.LOGIN_BUTTON.click()

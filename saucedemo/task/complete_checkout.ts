@@ -9,8 +9,8 @@ export class CompleteCheckout implements Task {
 
   async perform(actor: Actor): Promise<void> {
     const page = actor.stage.page
-    const cartPage = new CartPage(page)
-    const checkoutPage = new CheckoutPage(page)
+    const cartPage = CartPage.on(page)
+    const checkoutPage = CheckoutPage.on(page)
 
     await cartPage.CHECKOUT.click()
     await checkoutPage.FIRST_NAME.fill(this.customer.firstName)

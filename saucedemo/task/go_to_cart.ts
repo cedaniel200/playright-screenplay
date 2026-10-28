@@ -4,7 +4,7 @@ import { InventoryPage } from '../ui/inventory_page'
 
 export class GoToCart implements Task {
   async perform(actor: Actor): Promise<void> {
-    const inventoryPage = new InventoryPage(actor.stage.page)
+    const inventoryPage = InventoryPage.on(actor.stage.page)
     await inventoryPage.CART_LINK.click()
   }
 

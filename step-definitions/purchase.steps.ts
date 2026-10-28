@@ -31,16 +31,16 @@ When('Cesar inicia sesión como usuario bloqueado', async function () {
 })
 
 Then('Cesar ve el inventario', async function (this: ScreenplayWorld) {
-  await expect(new InventoryPage(this.page).INVENTORY_LIST).toBeVisible()
+  await expect(InventoryPage.on(this.page).INVENTORY_LIST).toBeVisible()
 })
 
 Then('Cesar ve el mensaje de usuario bloqueado', async function (this: ScreenplayWorld) {
-  await expect(new LoginPage(this.page).ERROR).toContainText(
+  await expect(LoginPage.on(this.page).ERROR).toContainText(
     'Sorry, this user has been locked out.'
   )
 })
 
-When('Cesar agrega una mochila al carrito', async function () {
+Given('Cesar agrega una mochila al carrito', async function () {
   await theActorInTheSpotlight().attemptsTo(
     AddProductToCart.the('sauce-labs-backpack')
   )
@@ -51,7 +51,7 @@ When('Cesar abre el carrito', async function () {
 })
 
 Then('Cesar ve un producto en el carrito', async function (this: ScreenplayWorld) {
-  await expect(new CartPage(this.page).CART_ITEM).toHaveCount(1)
+  await expect(CartPage.on(this.page).CART_ITEM).toHaveCount(1)
 })
 
 When('Cesar completa el checkout con sus datos', async function () {
@@ -61,7 +61,7 @@ When('Cesar completa el checkout con sus datos', async function () {
 })
 
 Then('Cesar ve la confirmación de la compra', async function (this: ScreenplayWorld) {
-  await expect(new CheckoutPage(this.page).COMPLETE_HEADER).toHaveText(
+  await expect(CheckoutPage.on(this.page).COMPLETE_HEADER).toHaveText(
     'Thank you for your order!'
   )
 })

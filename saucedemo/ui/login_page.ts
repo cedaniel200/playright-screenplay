@@ -6,10 +6,14 @@ export class LoginPage {
   readonly LOGIN_BUTTON: Locator
   readonly ERROR: Locator
 
-  constructor(page: Page) {
+  private constructor(page: Page) {
     this.USERNAME = page.locator('#user-name')
     this.PASSWORD = page.locator('#password')
     this.LOGIN_BUTTON = page.locator('#login-button')
     this.ERROR = page.locator('[data-test="error"]')
+  }
+
+  static on(page: Page): LoginPage {
+    return new LoginPage(page)
   }
 }

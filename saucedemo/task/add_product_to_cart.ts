@@ -6,7 +6,7 @@ export class AddProductToCart implements Task {
   constructor(private readonly product: string) {}
 
   async perform(actor: Actor): Promise<void> {
-    const inventoryPage = new InventoryPage(actor.stage.page)
+    const inventoryPage = InventoryPage.on(actor.stage.page)
     await inventoryPage.addToCart(this.product).click()
   }
 
