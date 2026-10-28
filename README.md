@@ -7,16 +7,21 @@
 ![Screenplay](https://img.shields.io/badge/Screenplay-pattern-blue)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-Login y compra completa contra [saucedemo.com](https://www.saucedemo.com) con Playwright,
-Cucumber y el patrón Screenplay. Los escenarios se escriben en Gherkin y los pasos delegan en
-actores y tareas.
+Proyecto de ejemplo para mostrar la forma más sencilla de implementar el patrón Screenplay dentro
+de un proyecto de Playwright usando Cucumber como herramienta de BDD, con las características que
+ya ofrece Playwright. La automatización es independiente de la aplicación: los escenarios Gherkin
+describen el flujo y los pasos delegan en actores y tareas.
+
+La variante con Cypress está en
+[cypress-cucumber-screenplay](https://github.com/cedaniel200/cypress-cucumber-screenplay).
 
 ## Qué incluye
 
-- **2 escenarios** en un feature: compra completa y usuario bloqueado.
+- **4 escenarios** en dos features: autenticación y compra.
 - **Playwright 1.64** con Chromium headless; modo headed disponible.
 - **Cucumber 13** con `tsx` para ejecutar TypeScript sin compilar.
-- **Screenplay**: `Actor`, `Stage`, `Task` y páginas de UI separadas.
+- **Screenplay**: `Actor`, `Stage`, `Task` y páginas de UI con factories.
+- **Informe HTML** generado por el formatter nativo de Cucumber.
 - **Sin credenciales locales**: saucedemo publica sus usuarios de demo.
 - **GitHub Actions** para ejecutar la suite en cada push y pull request.
 
@@ -44,18 +49,30 @@ Para ver el navegador:
 npm run test:headed
 ```
 
-Cucumber muestra el progreso y el resumen en consola. No hay reporte HTML adicional.
+Al terminar, Cucumber muestra el progreso en consola y genera el informe HTML.
+
+## Informe
+
+`npm test` deja el informe en:
+
+```text
+reports/cucumber-report.html
+```
+
+Incluye las features, escenarios y pasos con su estado y duración. La carpeta `reports/` está
+ignorada por git: el informe se regenera en cada ejecución.
 
 ## Estructura
 
 ```text
-features/
-└── purchase.feature              # compra y usuario bloqueado
+features
+├── authentication.feature        # login válido y usuario bloqueado
+└── purchase.feature              # carrito y checkout
 
-step-definitions/
+step-definitions
 └── purchase.steps.ts             # pasos Gherkin
 
-screenplay/
+screenplay
 ├── actor.ts                      # actor y builder
 ├── on_stage.ts                   # actor en escena
 ├── performable.ts                # contrato de una acción
@@ -63,10 +80,10 @@ screenplay/
 ├── task.ts                       # contrato de una tarea
 └── cucumber/screenplay_world.ts  # contexto de Cucumber
 
-saucedemo/
+saucedemo
 ├── model                         # User y Customer
 ├── task                          # login, carrito y checkout
-└── ui                            # selectores por pantalla
+└── ui                            # páginas y factories
 
 test.setup.ts                     # hooks de Cucumber y navegador
 cucumber.js                       # configuración de Cucumber
@@ -76,14 +93,15 @@ cucumber.js                       # configuración de Cucumber
 
 | Concepto | Dónde vive | Ejemplo |
 |---|---|---|
-| Escenario | `features` | «Compra de un producto» |
-| Paso | `step-definitions` | `Cesar agrega una mochila al carrito` |
+| Escenario | `features` | «Completar el checkout» |
+| Paso | `step-definitions` | `Cesar completa el checkout con sus datos` |
 | Actor | `screenplay/actor.ts` | `theActorNamed('Cesar')` |
 | Tarea | `saucedemo/task` | `Authenticate.with(user)` |
-| UI | `saucedemo/ui` | `LoginPage`, `InventoryPage` |
+| Página | `saucedemo/ui` | `InventoryPage.on(page)` |
 
-El paso arma el actor y le pide que ejecute tareas. Las tareas usan las páginas de UI; el feature
-no conoce selectores ni detalles de Playwright.
+Los pasos arman el actor y le piden que ejecute tareas. Las tareas usan las páginas de UI; el
+feature no conoce selectores ni detalles de Playwright. Las páginas se crean con `Page.on(page)`
+para que las tareas no construyan objetos directamente.
 
 ## Ten en cuenta
 
